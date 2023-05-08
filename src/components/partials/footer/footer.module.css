@@ -1,0 +1,11 @@
+.footer_container {
+  width: 100%;
+  padding: 60px 0px 55px 0px;
+  border-top: 3px solid #ebebeb;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .active {
+    display: flex !important;
+  }
+}
