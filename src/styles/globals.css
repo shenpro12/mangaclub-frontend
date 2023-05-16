@@ -14,3 +14,26 @@ body::-webkit-scrollbar-thumb {
   background-color: black;
   border-radius: 5px;
 }
+.site_container {
+  margin: 0px auto;
+}
+@media (min-width: 576px) {
+  .site_container {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .site_container {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .site_container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .site_container {
+    max-width: 1140px;
+  }
+}
