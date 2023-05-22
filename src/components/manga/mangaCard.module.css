@@ -1,0 +1,17 @@
+.image:hover {
+  transform: scale(1.2, 1.2);
+  filter: brightness(0.8);
+}
+.image {
+  width: 100%;
+  transition: 0.5s ease;
+  object-fit: cover;
+}
+.w_100 {
+  min-width: 100px;
+  max-width: 100px;
+}
+.w_60 {
+  min-width: 60px;
+  max-width: 60px;
+}

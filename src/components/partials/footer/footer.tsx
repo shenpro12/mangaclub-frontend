@@ -42,7 +42,7 @@ export default function Footer() {
         </div>
       </div>
       <div>
-        <h1 className="text-xs text-black/80">@ 2023 Manga Club</h1>
+        <h1 className="text-xs text-black/80">@ 2023 Manga Club by LEVANDAT</h1>
       </div>
       <div
         ref={moveTopbtn}

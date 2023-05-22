@@ -31,7 +31,11 @@ export default function SignIn({
       togleSignInHandle();
     } else {
       setStatus("Wrong username or password.");
+      return;
     }
+    setPassword("");
+    setUserNameOrEmai("");
+    setStatus("");
   };
   return (
     <div
@@ -62,11 +66,18 @@ export default function SignIn({
           <h1 className=" text-red-500 text-left py-3 font-medium">{status}</h1>
           <div>
             <label>UserName or Email*</label>
-            <input onInput={(e: any) => setUserNameOrEmai(e.target.value)} />
+            <input
+              onInput={(e: any) => setUserNameOrEmai(e.target.value)}
+              value={userNameOrEmail}
+            />
           </div>
           <div>
             <label>Password*</label>
-            <input onInput={(e: any) => setPassword(e.target.value)} />
+            <input
+              type="password"
+              onInput={(e: any) => setPassword(e.target.value)}
+              value={password}
+            />
           </div>
           <div className=" text-center mt-5">
             <p

@@ -15,9 +15,9 @@ export const authOptions: NextAuthOptions = {
         if (userInfo.status) {
           return {
             id: userInfo.user.id,
-            userName: userInfo.user.userName,
+            name: userInfo.user.userName,
             email: userInfo.user.email,
-            avatar: userInfo.user.avatar,
+            image: userInfo.user.avatar,
             isAdmin: userInfo.user.isAdmin,
             accessToken: userInfo.user.accessToken,
             refeshToken: userInfo.user.refeshToken,

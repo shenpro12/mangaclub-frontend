@@ -1,17 +1,55 @@
-import { useSession } from "next-auth/react";
-import Head from "next/head";
+import SiteLayout from "@/components/layouts/siteLauout";
+import MangaCard from "@/components/manga/mangaCard";
+import { Manga } from "@/types/manga";
+import request from "@/util/request";
+import { useEffect, useState } from "react";
 
-export default function HomePage() {
-  const { data: session, status } = useSession();
-  console.log(session);
+export default function HomePage({ mangaList }: { mangaList: Array<Manga> }) {
+  const [renderPerPage, setRenderPerPage] = useState(40);
+  const [renderManga, setRenderManga] = useState<Array<Manga>>([]);
+  useEffect(() => {
+    let temp = [];
+    for (let i = 0; i < renderPerPage && i < mangaList.length; i++) {
+      temp.push(mangaList[i]);
+    }
+    setRenderManga(temp);
+  }, [renderPerPage]);
   return (
-    <div className="site_container bg-red-400">
-      <Head>
-        <title>Mangaclub - Read Manga Online</title>
-      </Head>
-      <div className=" h-96"></div>
-      <div className=" h-96"></div>
-      <div className=" h-96"></div>
-    </div>
+    <SiteLayout
+      title="Mangaclub - Read Manga Online"
+      header="READ MANGA - LATEST UPDATES"
+      sideBarData={mangaList}
+      sideBarHeader="Most View"
+    >
+      <>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 w-full">
+          {renderManga.map((manga) => (
+            <MangaCard
+              key={manga.id}
+              manga={manga}
+              imageWidth={100}
+            ></MangaCard>
+          ))}
+        </div>
+        {renderPerPage < mangaList.length && (
+          <div
+            className="text-center uppercase bg-zinc-200/50 border border-black/10 hover:cursor-pointer duration-150 hover:bg-mainColor hover:text-white py-3 font-medium text-sm"
+            onClick={() => setRenderPerPage(renderPerPage + 2)}
+          >
+            <h1>Load more</h1>
+          </div>
+        )}
+      </>
+    </SiteLayout>
   );
+}
+
+export async function getStaticProps() {
+  const mangaList = await request.get("manga");
+  return {
+    props: {
+      mangaList,
+    },
+    revalidate: 300,
+  };
 }

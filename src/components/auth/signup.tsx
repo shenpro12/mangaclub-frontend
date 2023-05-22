@@ -42,6 +42,9 @@ export default function SignUp({
     if (res.status) {
       setHasSignUp(true);
     }
+    setEmail("");
+    setPassword("");
+    setUserName("");
   };
   return (
     <div

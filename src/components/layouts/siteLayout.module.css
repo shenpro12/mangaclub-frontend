@@ -1,0 +1,25 @@
+.children_container {
+  width: 100%;
+}
+.sideBar_container {
+  width: 100%;
+}
+.siteLayout_container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 576px) {
+  .siteLayout_container {
+    flex-direction: row;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .children_container {
+    width: 70%;
+    margin-right: 15px;
+  }
+  .sideBar_container {
+    width: 30%;
+    margin-left: 15px;
+  }
+}

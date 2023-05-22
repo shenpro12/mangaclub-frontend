@@ -1,5 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faBars, faClose } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faBars,
+  faClose,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
 import Link from "next/link";
 import styled from "./header.module.css";
@@ -8,12 +13,16 @@ import SubNav from "./subNav";
 import SignUp from "@/components/auth/signup";
 import SignIn from "@/components/auth/signin";
 import LostPassword from "@/components/auth/lostpassword";
+import { signOut, useSession } from "next-auth/react";
+import Modal from "@/components/modal/modal";
 export default function Header() {
+  const { data: session, status } = useSession();
   const [togleSearhBar, setTogleSearhBar] = useState<Boolean>(false);
   const [togleHeader, setTogleHeader] = useState<Boolean>(false);
   const [togleSignUp, setTogleSignUp] = useState<Boolean>(false);
   const [togleSignIn, setTogleSignIn] = useState<Boolean>(false);
   const [togleLostPassword, setTogleLostPassword] = useState<Boolean>(false);
+  const [togleModal, setTogleModal] = useState<boolean>(false);
   const searchInput = useRef<any>();
   const togleSearchBarHandle = () => {
     searchInput.current?.focus();
@@ -36,6 +45,10 @@ export default function Header() {
     setTogleLostPassword(!togleLostPassword);
     setTogleSignIn(togleLostPassword && false);
     setTogleSignUp(togleLostPassword && false);
+  };
+  const signOutHandle = () => {
+    signOut({ redirect: false });
+    setTogleModal(false);
   };
   return (
     <div>
@@ -80,32 +93,84 @@ export default function Header() {
                     size="2x"
                   ></FontAwesomeIcon>
                 </div>
+
                 <div className={styled.header_login_container}>
-                  <p
-                    className="flex-1 text-center py-2 px-2 mx-1 border-2 border-white rounded-full text-xs hover:bg-black hover:border-black duration-300 "
-                    onClick={togleSignInHandle}
-                  >
-                    Sign in
-                  </p>
-                  <p
-                    className="flex-1 text-center py-2 px-2 mx-1 border-2 border-white rounded-full text-xs hover:bg-black hover:border-black duration-300 "
-                    onClick={togleSignUpHandle}
-                  >
-                    Sign up
-                  </p>
+                  {status === "loading" ? (
+                    <div className="flex items-center">
+                      <FontAwesomeIcon icon={faSpinner} spin></FontAwesomeIcon>
+                    </div>
+                  ) : session?.user ? (
+                    <div className="text-white flex flex-col text-lg items-center normal-case w-full">
+                      <img
+                        src={session.user.image || ""}
+                        className="h-20 w-20 rounded-full mb-2"
+                      />
+                      <h1>{session.user.name}</h1>
+                    </div>
+                  ) : (
+                    <div className="flex w-full">
+                      <p
+                        className="flex-1 text-center py-2 px-2 mx-1 border-2 border-white rounded-full text-xs hover:bg-black hover:border-black duration-300 "
+                        onClick={togleSignInHandle}
+                      >
+                        Sign in
+                      </p>
+                      <p
+                        className="flex-1 text-center py-2 px-2 mx-1 border-2 border-white rounded-full text-xs hover:bg-black hover:border-black duration-300 "
+                        onClick={togleSignUpHandle}
+                      >
+                        Sign up
+                      </p>
+                    </div>
+                  )}
                 </div>
                 <li>
-                  <a href="/">home</a>
+                  <Link href="/" onClick={togleHeaderHandle}>
+                    home
+                  </Link>
                 </li>
                 <li>
-                  <a href="/">latest manga</a>
+                  <Link href="/" onClick={togleHeaderHandle}>
+                    latest manga
+                  </Link>
                 </li>
                 <li>
-                  <a href="/">hot manga</a>
+                  <Link href="/" onClick={togleHeaderHandle}>
+                    hot manga
+                  </Link>
                 </li>
                 <li>
-                  <a href="/">new manga</a>
+                  <Link href="/" onClick={togleHeaderHandle}>
+                    new manga
+                  </Link>
                 </li>
+                {session?.user && (
+                  <>
+                    {togleModal && (
+                      <Modal
+                        header="Thông báo"
+                        message="Bạn có chắc muốn đăng xuất?"
+                        yesNo={true}
+                        onClose={() => setTogleModal(false)}
+                        onAccept={signOutHandle}
+                      ></Modal>
+                    )}
+                    <li className={styled.user_option_mobile}>
+                      <a href="/123">my bookmarks</a>
+                    </li>
+                    <li className={styled.user_option_mobile}>
+                      <a href="/123">settings</a>
+                    </li>
+                    <li className={styled.user_option_mobile}>
+                      <a
+                        className=" hover:cursor-pointer"
+                        onClick={() => setTogleModal(true)}
+                      >
+                        logout
+                      </a>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
             <div className={styled.search_navigation__wrap}>
