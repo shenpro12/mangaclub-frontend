@@ -14,13 +14,17 @@ export default function Footer() {
     });
   };
   useEffect(() => {
-    document.onscroll = debounce(() => {
+    const backToTopHandle = debounce(() => {
       if (window.scrollY > 300) {
         moveTopbtn.current.classList.add(styled.active);
       } else {
         moveTopbtn.current.classList.remove(styled.active);
       }
     });
+    document.addEventListener("scroll", backToTopHandle);
+    return () => {
+      document.removeEventListener("scroll", backToTopHandle);
+    };
   }, []);
   return (
     <div className={styled.footer_container}>

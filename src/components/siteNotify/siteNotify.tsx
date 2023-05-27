@@ -40,13 +40,15 @@ export default function SiteNotify({
   });
   return (
     <div
-      className={`flex items-center duration-700 rounded-tr rounded-br shadow-md text-lg fixed p-3 bottom-7 left-2 bg-white border-r-8 hover:cursor-pointer ${color} ${
+      className={`flex items-center z-50 duration-700 rounded-tr rounded-br shadow-md text-lg fixed p-3 bottom-7 left-2 bg-white border-r-8 hover:cursor-pointer ${color} ${
         !type && !message && styled.hide
       }`}
       onClick={onClose}
     >
       <h1 className="mr-3 font-medium">{message}</h1>
-      <FontAwesomeIcon icon={icon} className="text-xl"></FontAwesomeIcon>
+      {icon && (
+        <FontAwesomeIcon icon={icon} className="text-xl"></FontAwesomeIcon>
+      )}
     </div>
   );
 }

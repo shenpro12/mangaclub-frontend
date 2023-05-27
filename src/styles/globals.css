@@ -17,9 +17,17 @@ body::-webkit-scrollbar-thumb {
 .site_container {
   margin: 0px auto;
 }
+.fixingContainerPadingX {
+  padding-left: 15px;
+  padding-right: 15px;
+}
 @media (min-width: 576px) {
   .site_container {
     max-width: 540px;
+  }
+  .fixingContainerPadingX {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 @media (min-width: 768px) {

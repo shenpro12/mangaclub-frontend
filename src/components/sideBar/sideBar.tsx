@@ -18,7 +18,12 @@ export default function SideBar({
       </div>
 
       {manga.map((manga) => (
-        <MangaCard key={manga.id} manga={manga} imageWidth={60}></MangaCard>
+        <MangaCard
+          sidebarStyle={true}
+          key={manga.id}
+          manga={manga}
+          imageWidth={60}
+        ></MangaCard>
       ))}
     </div>
   );

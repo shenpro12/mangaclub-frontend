@@ -22,7 +22,7 @@ export default function HomePage({ mangaList }: { mangaList: Array<Manga> }) {
       sideBarHeader="Most View"
     >
       <>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
           {renderManga.map((manga) => (
             <MangaCard
               key={manga.id}
@@ -45,11 +45,23 @@ export default function HomePage({ mangaList }: { mangaList: Array<Manga> }) {
 }
 
 export async function getStaticProps() {
-  const mangaList = await request.get("manga");
+  const mangaList: Array<Manga> = await request.get("manga");
+  if (!mangaList) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
+  for (let i = 0; i < mangaList.length; i++) {
+    mangaList[i].chapters.sort((a, b) => b.order - a.order);
+  }
   return {
     props: {
-      mangaList,
+      mangaList: mangaList.sort(
+        (a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)
+      ),
     },
-    revalidate: 300,
   };
 }

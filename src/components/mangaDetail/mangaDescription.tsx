@@ -21,9 +21,7 @@ export default function MangaDescription({
       descriptionContainer.current.clientHeight <
         descriptionContent.current.clientHeight
     ) {
-      descriptionContainer.current.style.height = `${
-        descriptionContent.current.clientHeight + 32
-      }px`;
+      descriptionContainer.current.style.height = `${descriptionContent.current.clientHeight}px`;
     } else {
       descriptionContainer.current.style.height = "119px";
     }
@@ -39,7 +37,7 @@ export default function MangaDescription({
   }, []);
   return (
     <div>
-      <div className="flex uppercase border-b border-black/10 mb-7 mt-2">
+      <div className="flex items-center uppercase border-b-2 border-black/10 mb-7 mt-2">
         <div className=" w-8 h-8 bg-mainColor text-white text-lg mr-5 flex justify-center items-center relative">
           <FontAwesomeIcon icon={faStar} className="z-10"></FontAwesomeIcon>
           <div className="absolute bg-mainColor rotate-45 -right-1 w-3 h-3"></div>
@@ -50,21 +48,20 @@ export default function MangaDescription({
         <p ref={descriptionContent} className={styled.description}>
           {description}
         </p>
-        <div
-          className={`absolute bottom-0 w-full h-8 ${styled.description_overlay}`}
-        ></div>
+        {!collap && collapBtn && (
+          <div
+            className={`absolute bottom-0 w-full h-14 ${styled.overlay}`}
+          ></div>
+        )}
       </div>
       {collapBtn && (
-        <div className="flex items-center justify-center hover:text-mainColor duration-150">
+        <div className="flex items-center text-black/60 text-sm mb-7 justify-center hover:text-mainColor duration-150">
           <h1
-            className="font-semibold text-lg hover:cursor-pointer inline-block mr-2"
+            className="font-semibold hover:cursor-pointer inline-block mr-2"
             onClick={() => setCollap(!collap)}
           >
             {collap ? "Show less" : "Show more"}
           </h1>
-          <FontAwesomeIcon
-            icon={collap ? faCaretUp : faCaretDown}
-          ></FontAwesomeIcon>
         </div>
       )}
     </div>
