@@ -4,7 +4,7 @@ import Header from "@/components/chapter/header";
 import PageLoading from "@/components/loading/pageLoading";
 import Discussion from "@/components/mangaDetail/Discussion";
 import Related from "@/components/mangaDetail/related";
-import { Chapter, Manga } from "@/types/manga";
+import { ApiResponse, Chapter, Manga } from "@/types/types";
 import request from "@/util/request";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -68,7 +68,8 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps(context: any) {
   const { mangaSlug, chapterSlug } = context.params;
-  const manga: Manga = await request.get(`manga/${mangaSlug}`);
+  const res: ApiResponse = await request.get(`manga/${mangaSlug}`);
+  let manga: Manga = res.payload;
   for (let i = 0; i < manga.chapters.length; i++) {
     let slug = manga.chapters[i].slug;
     if (slug === chapterSlug) {
@@ -77,7 +78,7 @@ export async function getStaticProps(context: any) {
           mainChapter: manga.chapters[i],
           mangaName: manga.name,
           mangaSlug: manga.slug,
-          subChapter: manga.chapters,
+          subChapter: manga.chapters.sort((a, b) => a.order - b.order),
         },
       };
     }

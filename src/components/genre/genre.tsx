@@ -3,7 +3,8 @@ import styled from "./genre.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
-export default function GenreList({ genreList }: { genreList: Array<any> }) {
+import { Genres } from "@/types/types";
+export default function GenreList({ genreList }: { genreList: Array<Genres> }) {
   const [collap, setCollap] = useState<boolean>(false);
   const genreContainer = useRef<any>();
   const genreContent = useRef<any>();
@@ -28,13 +29,14 @@ export default function GenreList({ genreList }: { genreList: Array<any> }) {
               Home
             </Link>{" "}
             /{" "}
-            <Link className="hover:text-mainColor duration-150" href="/">
+            <Link className="hover:text-mainColor duration-150" href="/manga">
               All Mangas
             </Link>
           </div>
         </section>
         <section>
-          <header className="flex justify-between">
+          <header className="flex justify-between relative">
+            <div className="absolute h-4 w-4 bg-mainColor -bottom-2 left-2 rotate-45"></div>
             <h1 className="uppercase text-white font-medium text-sm flex items-center bg-mainColor px-5 py-1">
               genres
             </h1>
@@ -53,7 +55,10 @@ export default function GenreList({ genreList }: { genreList: Array<any> }) {
               {genreList.map((genre) => (
                 <Link
                   key={genre.id}
-                  href={`/manga-genre/${genre.slug}`}
+                  href={{
+                    pathname: `/manga-genre/${genre.slug}`,
+                    query: undefined,
+                  }}
                   className="px-2 py-1 m-2 flex-1 min-w-max font-semibold text-lg text-black hover:text-mainColor duration-150"
                 >
                   <p>

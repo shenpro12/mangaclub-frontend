@@ -1,6 +1,6 @@
 import SiteLayout from "@/components/layouts/siteLauout";
 import MangaCard from "@/components/manga/mangaCard";
-import { Manga } from "@/types/manga";
+import { ApiResponse, Manga } from "@/types/types";
 import request from "@/util/request";
 import { useEffect, useState } from "react";
 
@@ -18,7 +18,7 @@ export default function HomePage({ mangaList }: { mangaList: Array<Manga> }) {
     <SiteLayout
       title="Mangaclub - Read Manga Online"
       header="READ MANGA - LATEST UPDATES"
-      sideBarData={mangaList}
+      sideBarData={mangaList.slice(0, 10)}
       sideBarHeader="Most View"
     >
       <>
@@ -45,8 +45,27 @@ export default function HomePage({ mangaList }: { mangaList: Array<Manga> }) {
 }
 
 export async function getStaticProps() {
-  const mangaList: Array<Manga> = await request.get("manga");
-  if (!mangaList) {
+  try {
+    const res: ApiResponse = await request.get("manga?paging=none&sort=views");
+
+    const mangaList: Array<Manga> = res.payload.mangaList;
+    if (!mangaList) {
+      return {
+        redirect: {
+          destination: "/404",
+          permanent: false,
+        },
+      };
+    }
+    for (let i = 0; i < mangaList.length; i++) {
+      mangaList[i].chapters.sort((a, b) => b.order - a.order);
+    }
+    return {
+      props: {
+        mangaList: mangaList,
+      },
+    };
+  } catch (err) {
     return {
       redirect: {
         destination: "/404",
@@ -54,14 +73,4 @@ export async function getStaticProps() {
       },
     };
   }
-  for (let i = 0; i < mangaList.length; i++) {
-    mangaList[i].chapters.sort((a, b) => b.order - a.order);
-  }
-  return {
-    props: {
-      mangaList: mangaList.sort(
-        (a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)
-      ),
-    },
-  };
 }

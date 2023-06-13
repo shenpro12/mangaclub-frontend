@@ -1,4 +1,4 @@
-import { Manga } from "@/types/manga";
+import { Manga } from "@/types/types";
 import styled from "./mangaDetail.module.css";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

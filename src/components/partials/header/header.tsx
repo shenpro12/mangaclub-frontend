@@ -130,18 +130,18 @@ export default function Header() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" onClick={togleHeaderHandle}>
+                  <Link href="/manga?sort=latest" onClick={togleHeaderHandle}>
                     latest manga
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" onClick={togleHeaderHandle}>
+                  <Link href="/manga?sort=views" onClick={togleHeaderHandle}>
                     hot manga
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" onClick={togleHeaderHandle}>
-                    new manga
+                  <Link href="/manga?sort=rating" onClick={togleHeaderHandle}>
+                    top rating
                   </Link>
                 </li>
                 {session?.user && (
@@ -180,11 +180,12 @@ export default function Header() {
               >
                 <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
               </div>
-              <div
+              <Link
+                href="/search"
                 className={`${styled.search_navigation_btnSearch} hover: cursor-pointer`}
               >
                 Search
-              </div>
+              </Link>
               <div className={styled.togle_menu} onClick={togleHeaderHandle}>
                 <FontAwesomeIcon
                   icon={faBars}

@@ -1,4 +1,4 @@
-import { Manga } from "@/types/manga";
+import { Manga } from "@/types/types";
 import Link from "next/link";
 import styled from "./mangaCard.module.css";
 import { useEffect, useState } from "react";
@@ -9,36 +9,40 @@ export default function MangaCard({
   manga,
   imageWidth,
   sidebarStyle,
+  chapterDate,
 }: {
   manga: Manga;
   imageWidth: 100 | 60;
   sidebarStyle?: boolean;
+  chapterDate?: boolean;
 }) {
   const [ratingPoint, setRatingPoint] = useState<number>(
     manga.ratings.reduce((total, curr: any) => total + curr.point, 0) /
       manga.ratings.length
   );
   useEffect(() => {
-    let dateList: NodeList = document.querySelectorAll("#date");
-    dateList.forEach((element: any) => {
-      let now: any = new Date();
-      let chapterDate: any = new Date(element.dataset.date);
-      let total_seconds = Math.abs(chapterDate - now) / 1000;
-      var days_difference = Math.floor(total_seconds / (60 * 60 * 24));
-      if (days_difference <= 2) {
-        element.innerHTML = `<img src=${"/new.gif"} alt="new chapter" style="max-height:16px; min-height:16px; max-width:30px; min-width:30px"/>`;
-      } else {
-        element.innerHTML = `${new Date(
-          element.dataset.date
-        ).toLocaleDateString()}`;
-      }
-    });
+    if (!chapterDate) {
+      let dateList: NodeList = document.querySelectorAll("#date");
+      dateList.forEach((element: any) => {
+        let now: any = new Date();
+        let chapterDate: any = new Date(element.dataset.date);
+        let total_seconds = Math.abs(chapterDate - now) / 1000;
+        var days_difference = Math.floor(total_seconds / (60 * 60 * 24));
+        if (days_difference <= 2) {
+          element.innerHTML = `<img src=${"/new.gif"} alt="new chapter" style="max-height:16px; min-height:16px; max-width:30px; min-width:30px"/>`;
+        } else {
+          element.innerHTML = `${new Date(
+            element.dataset.date
+          ).toLocaleDateString()}`;
+        }
+      });
+    }
   }, []);
   return (
     <div className="flex py-7 border-b border-black/10">
       <div className={`mr-5 ${styled[`w_${imageWidth}`]}`}>
         <div className="w-full h-min overflow-hidden">
-          <Link href={`manga/${manga.slug}`}>
+          <Link href={`/manga/${manga.slug}`}>
             <img src={manga.thumb_url} className={styled.image} />
           </Link>
         </div>

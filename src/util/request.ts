@@ -1,9 +1,11 @@
 import axios, { AxiosError } from "axios";
+
 const request = axios.create({
   baseURL: "http://localhost:3001/",
   timeout: 1000,
   withCredentials: true,
 });
+
 request.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
@@ -14,7 +16,12 @@ request.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
 
-    return error.response?.data;
+    throw error;
   }
 );
+
+request.interceptors.request.use(async (request: any) => {
+  return request;
+});
+
 export default request;

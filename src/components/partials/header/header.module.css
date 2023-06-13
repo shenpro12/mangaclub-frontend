@@ -1,7 +1,7 @@
 .header_container {
   width: 100%;
   padding: 0px 15px;
-  background: linear-gradient(to right, #348e7c 20%, #48a290);
+  background: #348e7c;
 }
 .header_navigation_container {
   padding: 5px 0px;

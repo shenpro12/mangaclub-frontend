@@ -50,7 +50,7 @@ export default function Footer() {
       </div>
       <div
         ref={moveTopbtn}
-        className="hidden fixed justify-center items-center rounded-full w-9 h-9 bg-zinc-400 text-white/60 hover:bg-mainColor hover:cursor-pointer hover:text-white duration-200 right-3 bottom-3"
+        className="hidden fixed justify-center items-center rounded-full w-9 h-9 bg-zinc-400 text-white/60 hover:bg-mainColor hover:cursor-pointer hover:text-white duration-200 right-5 bottom-5"
         onClick={moveToTop}
       >
         <FontAwesomeIcon icon={faAngleUp}></FontAwesomeIcon>

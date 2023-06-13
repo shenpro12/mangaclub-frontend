@@ -1,4 +1,4 @@
-import { Manga } from "@/types/manga";
+import { ApiResponse, Manga } from "@/types/types";
 import request from "@/util/request";
 import { useRouter } from "next/router";
 import Custom404 from "../../404";
@@ -9,8 +9,15 @@ import MangaDescription from "@/components/mangaDetail/mangaDescription";
 import MangaChapter from "@/components/mangaDetail/mangaChapter";
 import Discussion from "@/components/mangaDetail/Discussion";
 import Related from "@/components/mangaDetail/related";
+import { Chapter } from "@/types/types";
 
-export default function MangaDetailPage({ manga }: { manga: Manga }) {
+export default function MangaDetailPage({
+  manga,
+  sideBarData,
+}: {
+  manga: Manga;
+  sideBarData: Array<Manga>;
+}) {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -25,7 +32,7 @@ export default function MangaDetailPage({ manga }: { manga: Manga }) {
       <SiteLayout
         title={`Read ${manga.name} Manga Online`}
         header=""
-        sideBarData={[]}
+        sideBarData={sideBarData}
         sideBarHeader="Most View"
       >
         <div>
@@ -54,8 +61,13 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps(context: any) {
   const { mangaSlug } = context.params;
-  const manga: Manga = await request.get(`manga/${mangaSlug}`);
-  if (!manga) {
+  //const manga: ApiResponse = await request.get(`manga/${mangaSlug}`);
+  const [manga, sideBarData] = await Promise.all<any>([
+    request.get(`manga/${mangaSlug}`),
+    request.get("manga?paging=none&sort=views"),
+  ]);
+  let mangalist = manga.payload;
+  if (!mangalist) {
     return {
       redirect: {
         destination: "/404",
@@ -63,8 +75,11 @@ export async function getStaticProps(context: any) {
       },
     };
   }
-  manga.chapters.sort((a, b) => b.order - a.order);
+  mangalist.chapters.sort((a: Chapter, b: Chapter) => b.order - a.order);
   return {
-    props: { manga },
+    props: {
+      manga: mangalist,
+      sideBarData: sideBarData.payload.mangaList.slice(0, 9),
+    },
   };
 }

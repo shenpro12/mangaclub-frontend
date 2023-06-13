@@ -21,7 +21,7 @@ export default function SubNav({ togleSignUpHandle, togleSignInHandle }: any) {
         <ul className="uppercase flex flex-wrap py-2 my-auto flex-1">
           <li>
             <Link
-              href="/"
+              href="/manga-genre/manhua"
               className="font-bold text-black/60 text-sm hover:text-mainColor duration-300"
             >
               manhua
@@ -29,7 +29,7 @@ export default function SubNav({ togleSignUpHandle, togleSignInHandle }: any) {
           </li>
           <li>
             <Link
-              href="/"
+              href="/manga-genre/manhwa"
               className="font-bold text-black/60 text-sm hover:text-mainColor duration-300"
             >
               manhwa
@@ -37,7 +37,7 @@ export default function SubNav({ togleSignUpHandle, togleSignInHandle }: any) {
           </li>
           <li>
             <Link
-              href="/"
+              href="/manga-genre/yaoi"
               className="font-bold text-black/60 text-sm hover:text-mainColor duration-300"
             >
               yaoi
@@ -45,12 +45,22 @@ export default function SubNav({ togleSignUpHandle, togleSignInHandle }: any) {
           </li>
           <li>
             <Link
-              href="/"
+              href="/manga-genre/comedy"
               className="font-bold text-black/60 text-sm hover:text-mainColor duration-300"
             >
-              bookmarks
+              comedy
             </Link>
           </li>
+          {session && (
+            <li>
+              <Link
+                href="/manga-genre/bookmarks"
+                className="font-bold text-black/60 text-sm hover:text-mainColor duration-300"
+              >
+                bookmarks
+              </Link>
+            </li>
+          )}
         </ul>
 
         <div className={styled.sub_login_container}>
@@ -81,10 +91,9 @@ export default function SubNav({ togleSignUpHandle, togleSignInHandle }: any) {
 
                 <ul className={styled.user_option_tablet}>
                   <li>
-                    <Link href="/">My Bookmarks</Link>
-                  </li>
-                  <li>
-                    <Link href="/">Settings</Link>
+                    <Link href="/user-settings?tab=bookmark-settings">
+                      Settings
+                    </Link>
                   </li>
                   <li>
                     <p onClick={() => setTogleModal(true)}>Logout</p>

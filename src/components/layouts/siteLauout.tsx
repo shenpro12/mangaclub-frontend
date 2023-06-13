@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import styled from "./siteLayout.module.css";
 import Head from "next/head";
-import { Manga } from "@/types/manga";
+import { Manga } from "@/types/types";
 import SideBar from "../sideBar/sideBar";
 export default function SiteLayout({
   children,
@@ -24,7 +24,9 @@ export default function SiteLayout({
         <title>{title}</title>
       </Head>
       <div className={styled.children_container}>
-        {header && <h1 className="font-medium text-lg py-3 ">{header}</h1>}
+        {header && (
+          <h1 className="font-medium uppercase text-xl py-3 ">{header}</h1>
+        )}
         {children}
       </div>
       <div className={styled.sideBar_container}>

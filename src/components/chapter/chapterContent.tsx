@@ -1,4 +1,4 @@
-import { Image } from "@/types/manga";
+import { Image } from "@/types/types";
 import "lazysizes";
 import "lazysizes/plugins/parent-fit/ls.parent-fit";
 import styled from "./chapter.module.css";

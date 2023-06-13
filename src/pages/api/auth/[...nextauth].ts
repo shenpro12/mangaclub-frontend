@@ -30,7 +30,11 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/", signOut: "/" },
   callbacks: {
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user, account, profile, trigger, session }) {
+      if (trigger === "update" && session.newAT) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+        token.accessToken = session.newAT;
+      }
       return { ...token, ...user };
     },
     async session({ session, user, token }) {

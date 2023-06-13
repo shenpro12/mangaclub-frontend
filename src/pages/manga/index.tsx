@@ -1,62 +1,50 @@
 import GenreList from "@/components/genre/genre";
 import SiteLayout from "@/components/layouts/siteLauout";
-import PagingContent from "@/components/mangaPaging/pagingContent";
-import PagingControl from "@/components/mangaPaging/pagingControl";
-import PagingFilter from "@/components/mangaPaging/pagingFilter";
-import { Manga } from "@/types/manga";
+import PagingContainer from "@/components/mangaPaging";
+import { Genres, Manga, ResponseMangaInfo } from "@/types/types";
+import getUrlQuery from "@/util/getUrlQuery";
 import request from "@/util/request";
-import Head from "next/head";
+import { GetServerSideProps } from "next";
 
 export default function MangaColectionPage({
-  mangaList,
+  mangaInfo,
   genres,
+  sideBarData,
 }: {
-  mangaList: Array<Manga>;
-  genres: Array<any>;
+  mangaInfo: ResponseMangaInfo;
+  genres: Array<Genres>;
+  sideBarData: Array<Manga>;
 }) {
   return (
     <div>
-      <Head>
-        <title>Adaptation Archives - Mangaclub</title>
-      </Head>
       <GenreList genreList={genres}></GenreList>
       <SiteLayout
         title="List All Manga English From Mangaclub"
         header="All Mangas"
-        sideBarData={[]}
+        sideBarData={sideBarData}
         sideBarHeader="Most View"
       >
-        <>
-          <PagingFilter></PagingFilter>
-          <PagingContent></PagingContent>
-          <PagingControl></PagingControl>
-        </>
+        <PagingContainer
+          mangaInfo={mangaInfo}
+          redirectUrl="manga"
+        ></PagingContainer>
       </SiteLayout>
     </div>
   );
 }
 
-export async function getStaticProps() {
-  try {
-    let [mangaList, genres] = await Promise.all([
-      request.get("manga"),
-      request.get("genre"),
-    ]);
-    if (!mangaList && !genres) {
-      return {
-        redirect: {
-          destination: "/404",
-          permanent: false,
-        },
-      };
-    }
-    return {
-      props: {
-        mangaList,
-        genres,
-      },
-    };
-  } catch (err) {
-    console.log(err);
-  }
-}
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const queryParams: string = getUrlQuery(query);
+  const [mangaInfo, genres, sideBarData] = await Promise.all<any>([
+    request.get(`manga${queryParams ? queryParams : ""}`),
+    request.get("genre"),
+    request.get("manga?paging=none&sort=views"),
+  ]);
+  return {
+    props: {
+      mangaInfo: mangaInfo.payload,
+      genres: genres.payload,
+      sideBarData: sideBarData.payload.mangaList.slice(0, 9),
+    },
+  };
+};

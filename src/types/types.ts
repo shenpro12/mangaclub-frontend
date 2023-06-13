@@ -42,3 +42,28 @@ export interface Image {
   thumb_url: string;
   order: number;
 }
+export interface Genres {
+  createdAt: string;
+  deleteAt: null;
+  id: string;
+  manga: number;
+  name: string;
+  slug: string;
+  updatedAt: string;
+}
+
+export interface ResponseMangaInfo {
+  mangaList: Array<Manga>;
+  pages: Array<number>;
+  page: number;
+  totalItem: number;
+  maxPage: number;
+}
+
+export interface ApiResponse {
+  timestamp: Date;
+  status: number;
+  error: string;
+  message: string;
+  payload: any;
+}

@@ -1,5 +1,6 @@
-import { Manga } from "@/types/manga";
+import { Manga } from "@/types/types";
 import MangaCard from "../manga/mangaCard";
+import Link from "next/link";
 
 export default function SideBar({
   manga,
@@ -25,6 +26,16 @@ export default function SideBar({
           imageWidth={60}
         ></MangaCard>
       ))}
+      {manga.length ? (
+        <Link
+          href="/manga?sort=views"
+          className="bg-mainColor text-center block text-white font-medium py-2 text-sm duration-150 hover:cursor-pointer hover:bg-black"
+        >
+          More
+        </Link>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

@@ -1,0 +1,22 @@
+.container {
+  display: block;
+}
+.tab,
+.content {
+  width: 100%;
+}
+.tab {
+  margin-bottom: 20px;
+  margin-right: 30px;
+}
+@media (min-width: 992px) {
+  .container {
+    display: flex;
+  }
+  .tab {
+    width: 30%;
+  }
+  .content {
+    width: 70%;
+  }
+}
