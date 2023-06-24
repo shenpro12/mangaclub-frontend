@@ -156,11 +156,15 @@ export default function Header() {
                       ></Modal>
                     )}
                     <li className={styled.user_option_mobile}>
-                      <a href="/123">my bookmarks</a>
+                      <Link href="/user-settings?tab=bookmark-settings">
+                        settings
+                      </Link>
                     </li>
-                    <li className={styled.user_option_mobile}>
-                      <a href="/123">settings</a>
-                    </li>
+                    {session.user.isAdmin && (
+                      <li className={styled.user_option_mobile}>
+                        <Link href="/manager">Manager</Link>
+                      </li>
+                    )}
                     <li className={styled.user_option_mobile}>
                       <a
                         className=" hover:cursor-pointer"

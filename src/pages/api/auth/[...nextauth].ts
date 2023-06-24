@@ -35,6 +35,18 @@ export const authOptions: NextAuthOptions = {
         // Note, that `session` can be any arbitrary object, remember to validate it!
         token.accessToken = session.newAT;
       }
+      if (trigger === "update" && session.newUserName) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+        token.name = session.newUserName;
+      }
+      if (trigger === "update" && session.newEmail) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+        token.email = session.newEmail;
+      }
+      if (trigger === "update" && session.newAvatarUrl) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+        token.image = session.newAvatarUrl;
+      }
       return { ...token, ...user };
     },
     async session({ session, user, token }) {
@@ -42,6 +54,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);

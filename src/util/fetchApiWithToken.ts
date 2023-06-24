@@ -3,10 +3,11 @@ import request from "@/util/request";
 
 const fetchApiWithToken = async (
   url: Array<string>,
-  method: "get" | "post",
+  method: "get" | "post" | "delete" | "put",
   AT: string,
   RT: string,
-  data?: any
+  data?: any,
+  contentype: string = "application/json"
 ): Promise<{
   results?: Array<ApiResponse>;
   status: "success" | "unauthenticated";
@@ -18,7 +19,10 @@ const fetchApiWithToken = async (
         request.request({
           url: i,
           method: method,
-          headers: { Authorization: `Bearer ${AT}` },
+          headers: {
+            Authorization: `Bearer ${AT}`,
+            "Content-Type": contentype,
+          },
           data: data,
         })
       )
@@ -41,6 +45,7 @@ const fetchApiWithToken = async (
               method: method,
               headers: {
                 Authorization: `Bearer ${refeshToken.payload}`,
+                "Content-Type": contentype,
               },
               data: data,
             })
@@ -56,7 +61,7 @@ const fetchApiWithToken = async (
         return { status: "unauthenticated" };
       }
     } else {
-      throw new Error(error);
+      throw error;
     }
   }
 };

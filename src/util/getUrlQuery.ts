@@ -5,8 +5,12 @@ const getUrlQuery = (query: {
   genre?: any;
   author?: any;
   status?: any;
+  limit?: any;
 }) => {
   let queryString: Array<string> = [];
+  if (query.limit) {
+    queryString.push(`limit=${query.limit}`);
+  }
   if (query.sort) {
     queryString.push(`sort=${query.sort}`);
   }

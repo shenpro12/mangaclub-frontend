@@ -1,0 +1,39 @@
+.navBar {
+  flex: 1;
+  margin-top: 10px;
+  overflow: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.navBar > div {
+  height: 320px;
+  overflow-y: auto;
+}
+.navBar > div::-webkit-scrollbar {
+  width: 5px;
+  background-color: rgba(0, 0, 0, 0);
+}
+.navBar > div::-webkit-scrollbar-thumb {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, 0.477);
+  border-radius: 5px;
+}
+.navBar li {
+  padding: 15px 20px;
+  font-weight: 600;
+  transition: 0.3s ease;
+  border-left: 5px solid rgb(38 38 38 /1);
+  display: flex;
+  align-items: center;
+}
+.navBar li:hover {
+  cursor: pointer;
+  background-color: rgb(23 23 23 / 1);
+  border-left: 5px solid rgb(23 23 23 / 1);
+}
+.active {
+  background-color: rgb(23 23 23 / 1);
+  color: #348e7c;
+  border-left: 5px solid #348e7c !important;
+}

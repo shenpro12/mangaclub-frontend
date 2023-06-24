@@ -1,11 +1,18 @@
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import SiteNotify from "../siteNotify/siteNotify";
+import fetchApiWithToken from "@/util/fetchApiWithToken";
 
-export default function Rating({ ratings }: { ratings: Array<any> }) {
-  const { data: session, status } = useSession();
+export default function Rating({
+  ratings,
+  mangaId,
+}: {
+  ratings: Array<any>;
+  mangaId: string;
+}) {
+  const { data: session, status, update } = useSession();
   const h1 = useRef<any>();
   const [ratingData, setratingData] = useState(
     ratings.length
@@ -13,6 +20,7 @@ export default function Rating({ ratings }: { ratings: Array<any> }) {
           ratings.length
       : 0
   );
+  const [loading, setLoading] = useState<boolean>(false);
   const [notify, setNotify] = useState<{
     type: "warning" | "error" | "ok" | "";
     message: string;
@@ -37,11 +45,38 @@ export default function Rating({ ratings }: { ratings: Array<any> }) {
     highLightStartHandle(ratingData, false);
     h1.current.innerHTML = "";
   };
-  const sendRatingHandle = (startPoint: number) => {
+  const sendRatingHandle = async (startPoint: number) => {
     if (!session) {
       setNotify({ type: "error", message: "Please login!" });
       return;
     }
+    setLoading(true);
+    let user: any = session?.user;
+    const { results, status, newAT } = await fetchApiWithToken(
+      ["account/manga/rating"],
+      "put",
+      user.accessToken,
+      user.refeshToken,
+      { mangaId, point: startPoint }
+    );
+    if (status === "unauthenticated" || !results) {
+      signOut({ redirect: false });
+    }
+    if (newAT) {
+      update({ newAT: newAT });
+    }
+    if (results) {
+      setNotify({
+        type: "ok",
+        message: "Voted success! Your voted will update soon!",
+      });
+    } else {
+      setNotify({
+        type: "error",
+        message: "Something wrong! Please try again!",
+      });
+    }
+    setLoading(false);
   };
   useEffect(() => {
     highLightStartHandle(ratingData, false);
@@ -54,7 +89,16 @@ export default function Rating({ ratings }: { ratings: Array<any> }) {
         type={notify.type}
         message={notify.message}
       ></SiteNotify>
-      <div className="flex">
+      <div className="flex relative">
+        {loading && (
+          <div className="bg-white/20 absolute flex justify-center items-center w-full h-full">
+            <FontAwesomeIcon
+              icon={faSpinner}
+              className="text-black/50"
+              spin
+            ></FontAwesomeIcon>
+          </div>
+        )}
         <div
           id="1"
           className="text-zinc-400 mr-1 text-2xl hover:cursor-pointer"

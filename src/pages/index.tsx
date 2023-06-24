@@ -5,7 +5,7 @@ import request from "@/util/request";
 import { useEffect, useState } from "react";
 
 export default function HomePage({ mangaList }: { mangaList: Array<Manga> }) {
-  const [renderPerPage, setRenderPerPage] = useState(40);
+  const [renderPerPage, setRenderPerPage] = useState(5);
   const [renderManga, setRenderManga] = useState<Array<Manga>>([]);
   useEffect(() => {
     let temp = [];
@@ -46,7 +46,7 @@ export default function HomePage({ mangaList }: { mangaList: Array<Manga> }) {
 
 export async function getStaticProps() {
   try {
-    const res: ApiResponse = await request.get("manga?paging=none&sort=views");
+    const res: ApiResponse = await request.get("manga?paging=none&sort=latest");
 
     const mangaList: Array<Manga> = res.payload.mangaList;
     if (!mangaList) {
@@ -57,9 +57,7 @@ export async function getStaticProps() {
         },
       };
     }
-    for (let i = 0; i < mangaList.length; i++) {
-      mangaList[i].chapters.sort((a, b) => b.order - a.order);
-    }
+
     return {
       props: {
         mangaList: mangaList,

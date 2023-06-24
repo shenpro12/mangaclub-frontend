@@ -2,7 +2,7 @@
   margin: 0px auto;
 }
 .container {
-  padding: 0px 15px;
+  margin: 0px 15px;
 }
 .c_picker {
   background-color: #ebebeb;
@@ -28,9 +28,25 @@
   max-width: 450px;
   flex: 1;
   margin-bottom: 10px;
+  margin-right: 15px;
 }
 .control_container {
   justify-content: center;
+}
+.style_picker {
+  margin-bottom: 10px;
+  position: relative;
+}
+.next_img_btn,
+.prev_img_btn {
+  flex: 1;
+}
+.next_img_btn:hover {
+  cursor: url("../../../public/cursorRight.png"), auto;
+}
+
+.prev_img_btn:hover {
+  cursor: url("../../../public/cursorLeft.png"), auto;
 }
 @media (max-width: 480px) {
   .c_picker_container {
@@ -50,14 +66,18 @@
   .image {
     max-width: 660px;
   }
-  .control_container {
-    justify-content: space-between;
-  }
-  .c_picker_container {
+
+  .style_picker {
     margin-bottom: 0px;
   }
 }
 @media (min-width: 992px) {
+  .c_picker_container {
+    margin-bottom: 0px;
+  }
+  .control_container {
+    justify-content: space-between;
+  }
   .image {
     max-width: 728px;
   }

@@ -17,13 +17,15 @@
     padding-left: 0px;
     padding-right: 0px;
   }
-  .children_container {
-    width: 70%;
-    margin-right: 15px;
-  }
+}
+@media (min-width: 768px) {
   .sideBar_container {
     width: 30%;
     margin-left: 15px;
     display: block;
+  }
+  .children_container {
+    width: 70%;
+    margin-right: 15px;
   }
 }

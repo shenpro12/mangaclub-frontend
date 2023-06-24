@@ -3,28 +3,25 @@ import MangaCard from "../manga/mangaCard";
 import { faSpinner, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import fetchApiWithToken from "@/util/fetchApiWithToken";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-export default function Bookmark({
-  bookmarks,
-  session,
-  updateSession,
-  onChangeBookmark,
-}: {
-  bookmarks: Array<any>;
-  session: any;
-  updateSession: any;
-  onChangeBookmark: any;
-}) {
-  const [bookmarkList, setBookmarkList] = useState<Array<any>>(
-    bookmarks.sort(
-      (a, b) =>
-        Date.parse(b.updatedAt.toString()) - Date.parse(a.updatedAt.toString())
-    )
-  );
+export default function Bookmark() {
+  const router = useRouter();
+  const {
+    data: session,
+    status,
+    update,
+  } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/");
+    },
+  });
+  const [bookmarkList, setBookmarkList] = useState<Array<any>>([]);
   const [deleteList, setDeleteList] = useState<Array<string>>([]);
-
   const [loading, setLoading] = useState<boolean>(false);
+
   const deleteCheckboxHandle = (e: any) => {
     if (e.target.checked) {
       setDeleteList([...deleteList, e.target.value]);
@@ -34,6 +31,7 @@ export default function Bookmark({
       );
     }
   };
+
   const checkAllHandle = (e: any) => {
     let elements: any = document.querySelectorAll("#delete_item_checkbox");
     //
@@ -67,18 +65,19 @@ export default function Bookmark({
   const deleteBookmarkByListsHandle = async () => {
     if (deleteList.length) {
       setLoading(true);
+      let user: any = session?.user;
       const { results, status, newAT } = await fetchApiWithToken(
         ["account/bookmark/listDelete"],
-        "post",
-        session.user.accessToken,
-        session.user.refeshToken,
+        "delete",
+        user.accessToken,
+        user.refeshToken,
         { bookmarksId: deleteList }
       );
       if (status === "unauthenticated" || !results) {
         signOut({ callbackUrl: "/" });
       }
       if (newAT) {
-        updateSession({ newAT: newAT });
+        update({ newAT: newAT });
       }
       if (results) {
         const [deleteItem] = results;
@@ -99,18 +98,19 @@ export default function Bookmark({
 
   const deleteBookmarkHandle = async (id: string) => {
     setLoading(true);
+    let user: any = session?.user;
     const { results, status, newAT } = await fetchApiWithToken(
       ["account/bookmark/deleteOne"],
-      "post",
-      session.user.accessToken,
-      session.user.refeshToken,
+      "delete",
+      user.accessToken,
+      user.refeshToken,
       { bookmarkId: id }
     );
     if (status === "unauthenticated" || !results) {
       signOut({ callbackUrl: "/" });
     }
     if (newAT) {
-      updateSession({ newAT: newAT });
+      update({ newAT: newAT });
     }
     if (results) {
       const [deleteItem] = results;
@@ -128,8 +128,27 @@ export default function Bookmark({
   };
 
   useEffect(() => {
-    onChangeBookmark(bookmarkList);
-  }, [bookmarkList]);
+    (async () => {
+      let user: any = session?.user;
+      const { results, status, newAT } = await fetchApiWithToken(
+        ["account/bookmarks"],
+        "get",
+        user.accessToken,
+        user.refeshToken
+      );
+      if (status === "unauthenticated" || !results) {
+        signOut({ callbackUrl: "/" });
+      }
+      if (newAT) {
+        update({ newAT: newAT });
+      }
+      if (results) {
+        let [data] = results;
+        setBookmarkList(data.payload);
+      }
+    })();
+  }, []);
+
   return (
     <div>
       {loading && (
@@ -180,7 +199,7 @@ export default function Bookmark({
           <div className="flex items-center mr-5 text-black/60 font-semibold">
             <input
               type="checkbox"
-              className="mr-2"
+              className="mr-2 hover:cursor-pointer"
               id="checkall_checkbox"
               onChange={checkAllHandle}
             />

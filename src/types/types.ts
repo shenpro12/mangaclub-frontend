@@ -20,6 +20,7 @@ export interface Manga {
     slug: string;
     images: Array<any>;
   }>;
+  bookmarks: Array<any>;
   createdAt: string;
   updatedAt: string;
   deleteAt: null;

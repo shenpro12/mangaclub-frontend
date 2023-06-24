@@ -2,17 +2,46 @@ import { useState } from "react";
 import validator from "validator";
 import styled from "./auth.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import request from "@/util/request";
+import { ApiResponse } from "@/types/types";
 export default function LostPassword({ active, togleLostPasswordHandle }: any) {
   const [status, setStatus] = useState<string>("");
-  const [userNameOrEmai, setUserNameOrEmai] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const getNewPasswordHandle = () => {};
+  const getNewPasswordHandle = async () => {
+    if (validator.isEmpty(email)) {
+      setStatus("Please enter information");
+      return;
+    }
+    if (!validator.isEmail(email)) {
+      setStatus("Email is not accept! Please try again!");
+      return;
+    }
+    setLoading(true);
+    try {
+      let res: ApiResponse = await request.put("account/newPassword", {
+        email,
+      });
+      setStatus(res.message);
+    } catch (err) {
+      setStatus("Something wrong! Please try again!");
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div
       className={`${styled.wrap} ${active ? styled.active : ""}`}
       onClick={togleLostPasswordHandle}
     >
+      {loading && (
+        <div className="fixed top-0 bottom-0 left-0 right-0 bg-black/50 z-10 text-white flex justify-center items-center text-2xl">
+          <FontAwesomeIcon icon={faSpinner} spin></FontAwesomeIcon>
+        </div>
+      )}
       <section
         className={styled.auth_container}
         onClick={(e) => {
@@ -31,8 +60,8 @@ export default function LostPassword({ active, togleLostPasswordHandle }: any) {
         <div className={styled.auth_body}>
           <h1 className=" text-red-500 text-left py-3 font-medium">{status}</h1>
           <div>
-            <label>UserName or Email*</label>
-            <input onInput={(e: any) => setUserNameOrEmai(e.target.value)} />
+            <label>Your Email*</label>
+            <input onInput={(e: any) => setEmail(e.target.value)} />
           </div>
           <div className=" text-center mt-5">
             <p

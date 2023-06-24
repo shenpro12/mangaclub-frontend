@@ -21,6 +21,9 @@ body::-webkit-scrollbar-thumb {
   padding-left: 15px;
   padding-right: 15px;
 }
+.manager_container {
+  flex: 1;
+}
 @media (min-width: 576px) {
   .site_container {
     max-width: 540px;

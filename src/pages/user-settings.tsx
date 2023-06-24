@@ -1,9 +1,11 @@
 import SiteLayout from "@/components/layouts/siteLauout";
 import Profile from "@/components/profile";
 import request from "@/util/request";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function UserSettingsPage() {
+  const router = useRouter();
   const [sideBarData, setSideBarData] = useState<Array<any>>([]);
 
   useEffect(() => {
@@ -15,7 +17,13 @@ export default function UserSettingsPage() {
 
   return (
     <SiteLayout
-      title="User Settings - Mangaclub"
+      title={`${
+        router.query.tab === "account-settings"
+          ? "My Profile - "
+          : router.query.tab === "bookmark-settings"
+          ? "My Bookmarks - "
+          : ""
+      }Mangaclub`}
       header=""
       sideBarData={sideBarData}
       sideBarHeader="Most view"

@@ -22,40 +22,7 @@ export default function Profile() {
     },
   });
 
-  const [profile, setProfile] = useState<any>();
-  const [isFetch, setIsFetch] = useState<boolean>(false);
-
-  const changeBookmarkHandle = (bookmarks: any) => {
-    setProfile({ ...profile, bookmarks: bookmarks });
-  };
-
-  useEffect(() => {
-    (async () => {
-      if (session && !isFetch) {
-        let temp: any = { ...session };
-        const { results, status, newAT } = await fetchApiWithToken(
-          ["account/profile"],
-          "get",
-          temp.user.accessToken,
-          temp.user.refeshToken
-        );
-
-        if (status === "unauthenticated" || !results) {
-          signOut({ callbackUrl: "/" });
-        }
-        if (newAT) {
-          update({ newAT: newAT });
-        }
-        if (results) {
-          const [userProfile] = results;
-          setProfile(userProfile.payload);
-        }
-        setIsFetch(true);
-      }
-    })();
-  }, [session]);
-
-  if (status === "loading" || !profile) {
+  if (status === "loading") {
     return <PageLoading></PageLoading>;
   }
 
@@ -104,14 +71,9 @@ export default function Profile() {
         </div>
         <div className={styled.content}>
           {router.query.tab === "account-settings" ? (
-            <Account profile={profile}></Account>
+            <Account></Account>
           ) : router.query.tab === "bookmark-settings" ? (
-            <Bookmark
-              bookmarks={profile.bookmarks}
-              session={session}
-              updateSession={update}
-              onChangeBookmark={changeBookmarkHandle}
-            ></Bookmark>
+            <Bookmark></Bookmark>
           ) : (
             <div></div>
           )}

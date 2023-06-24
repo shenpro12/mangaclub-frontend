@@ -54,7 +54,7 @@ export default function SubNav({ togleSignUpHandle, togleSignInHandle }: any) {
           {session && (
             <li>
               <Link
-                href="/manga-genre/bookmarks"
+                href="/user-settings?tab=bookmark-settings"
                 className="font-bold text-black/60 text-sm hover:text-mainColor duration-300"
               >
                 bookmarks
@@ -95,6 +95,11 @@ export default function SubNav({ togleSignUpHandle, togleSignInHandle }: any) {
                       Settings
                     </Link>
                   </li>
+                  {session.user.isAdmin && (
+                    <li>
+                      <Link href="/manager">Manager</Link>
+                    </li>
+                  )}
                   <li>
                     <p onClick={() => setTogleModal(true)}>Logout</p>
                   </li>

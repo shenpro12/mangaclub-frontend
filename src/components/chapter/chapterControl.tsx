@@ -22,7 +22,11 @@ export default function ChapterControl({
 }) {
   const router = useRouter();
   const selectChapterHandle = (e: any) => {
-    router.push(`/manga/${mangaSlug}/${e.target.value}`);
+    router.push(
+      `/manga/${mangaSlug}/${e.target.value}${
+        router.query.style ? `?style=${router.query.style}` : ""
+      }`
+    );
   };
   const [nextUrl, setNextUrl] = useState<string>();
   const [prevUrl, setPrevUrl] = useState<string>();
@@ -37,45 +41,86 @@ export default function ChapterControl({
     return selected;
   };
 
+  const selectViewStyleHandle = (e: any) => {
+    router.push(
+      `/manga/${router.query.mangaSlug}/${router.query.chapterSlug}?style=${e.target.value}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
   useEffect(() => {
     for (let i = 0; i < subChapter.length; i++) {
       let bool = subChapter[i].slug === chapterSlug;
 
       if (bool && i == 0 && subChapter[i + 1]) {
         setPrevUrl("");
-        setNextUrl(`/manga/${mangaSlug}/${subChapter[i + 1].slug}`);
+        setNextUrl(
+          `/manga/${mangaSlug}/${subChapter[i + 1].slug}${
+            router.query.style ? `?style=${router.query.style}` : ""
+          }`
+        );
       } else if (bool && i > 0 && i < subChapter.length - 1) {
-        setNextUrl(`/manga/${mangaSlug}/${subChapter[i + 1].slug}`);
-        setPrevUrl(`/manga/${mangaSlug}/${subChapter[i - 1].slug}`);
+        setNextUrl(
+          `/manga/${mangaSlug}/${subChapter[i + 1].slug}${
+            router.query.style ? `?style=${router.query.style}` : ""
+          }`
+        );
+        setPrevUrl(
+          `/manga/${mangaSlug}/${subChapter[i - 1].slug}${
+            router.query.style ? `?style=${router.query.style}` : ""
+          }`
+        );
       } else if (bool && i == subChapter.length - 1 && subChapter[i - 1]) {
-        setPrevUrl(`/manga/${mangaSlug}/${subChapter[i - 1].slug}`);
+        setPrevUrl(
+          `/manga/${mangaSlug}/${subChapter[i - 1].slug}${
+            router.query.style ? `?style=${router.query.style}` : ""
+          }`
+        );
         setNextUrl("");
       } else if (subChapter.length == 1) {
         setPrevUrl("");
         setNextUrl("");
       }
     }
-  }, [chapterSlug]);
+  }, [chapterSlug, router]);
   return (
     <div
       className={`flex items-center flex-wrap ${styled.container} ${styled.control_container}`}
     >
-      <div className={styled.c_picker_container}>
-        <FontAwesomeIcon
-          icon={faSort}
-          className="absolute top-2/4 right-3 -translate-y-2/4 w-5 text-black/50"
-        ></FontAwesomeIcon>
-        <select
-          value={getSelectValue()}
-          className={styled.c_picker}
-          onChange={selectChapterHandle}
-        >
-          {subChapter.map((chapter) => (
-            <option key={chapter.id} value={chapter.slug}>
-              {chapter.title}
-            </option>
-          ))}
-        </select>
+      <div className="flex flex-wrap justify-center">
+        <div className={styled.c_picker_container}>
+          <FontAwesomeIcon
+            icon={faSort}
+            className="absolute top-2/4 right-3 -translate-y-2/4 w-5 text-black/50"
+          ></FontAwesomeIcon>
+          <select
+            value={getSelectValue()}
+            className={styled.c_picker}
+            onChange={selectChapterHandle}
+          >
+            {subChapter.map((chapter) => (
+              <option key={chapter.id} value={chapter.slug}>
+                {chapter.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styled.style_picker}>
+          <FontAwesomeIcon
+            icon={faSort}
+            className="absolute top-2/4 right-3 -translate-y-2/4 w-5 text-black/50"
+          ></FontAwesomeIcon>
+          <select
+            value={router.query.style === "paged" ? "paged" : "list"}
+            className={styled.c_picker}
+            onChange={selectViewStyleHandle}
+          >
+            <option value="list">List style</option>
+            <option value="paged">Paged style</option>
+          </select>
+        </div>
       </div>
       <div className="flex text-white font-medium">
         {prevUrl && (

@@ -1,23 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "./mangaDetail.module.css";
-import {
-  faStar,
-  faCaretUp,
-  faCaretDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 export default function MangaDescription({
   description,
 }: {
   description: string;
 }) {
+  const router = useRouter();
   let descriptionContainer = useRef<any>();
   let descriptionContent = useRef<any>();
   const [collap, setCollap] = useState<boolean>(false);
   const [collapBtn, setCollapBtn] = useState<boolean>(true);
-  useEffect(() => {
+
+  const toggleDescriptionHandle = () => {
     if (
-      collap &&
+      !collap &&
       descriptionContainer.current.clientHeight <
         descriptionContent.current.clientHeight
     ) {
@@ -25,18 +24,22 @@ export default function MangaDescription({
     } else {
       descriptionContainer.current.style.height = "119px";
     }
-  });
+    setCollap(!collap);
+  };
 
   useEffect(() => {
-    if (
-      descriptionContainer.current.clientHeight >
-      descriptionContent.current.clientHeight
-    ) {
+    setCollap(false);
+    descriptionContainer.current.style.height = "119px";
+    if (descriptionContent.current.clientHeight < 119) {
+      descriptionContainer.current.style.height = "min-content";
       setCollapBtn(false);
+    } else {
+      setCollapBtn(true);
     }
-  }, []);
+  }, [router]);
+
   return (
-    <div>
+    <div className="mb-7">
       <div className="flex items-center uppercase border-b-2 border-black/10 mb-7 mt-2">
         <div className=" w-8 h-8 bg-mainColor text-white text-lg mr-5 flex justify-center items-center relative">
           <FontAwesomeIcon icon={faStar} className="z-10"></FontAwesomeIcon>
@@ -55,10 +58,10 @@ export default function MangaDescription({
         )}
       </div>
       {collapBtn && (
-        <div className="flex items-center text-black/60 text-sm mb-7 justify-center hover:text-mainColor duration-150">
+        <div className="flex items-center text-black/60 text-sm mt-1 justify-center hover:text-mainColor duration-150">
           <h1
             className="font-semibold hover:cursor-pointer inline-block mr-2"
-            onClick={() => setCollap(!collap)}
+            onClick={toggleDescriptionHandle}
           >
             {collap ? "Show less" : "Show more"}
           </h1>

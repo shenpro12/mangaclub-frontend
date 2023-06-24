@@ -33,11 +33,12 @@ export default function SiteNotify({
   useEffect(() => {
     const ticker = setTimeout(() => {
       onClose();
+      clearTimeout(ticker);
     }, 5000);
     return () => {
       clearTimeout(ticker);
     };
-  });
+  }, [type]);
   return (
     <div
       className={`flex items-center z-50 duration-700 rounded-tr rounded-br shadow-md text-lg fixed p-3 bottom-7 left-2 bg-white border-r-8 hover:cursor-pointer ${color} ${
