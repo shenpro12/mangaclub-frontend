@@ -35,7 +35,7 @@ export default function MangaEditorLayout({
   return (
     <React.Fragment>
       <Navigate navigateData={navigateData} type="sub"></Navigate>
-      <div className="flex-1 h-full bg-neutral-800 p-5">{children}</div>
+      <div className="flex-1 h-full bg-neutral-800 relative">{children}</div>
     </React.Fragment>
   );
 }

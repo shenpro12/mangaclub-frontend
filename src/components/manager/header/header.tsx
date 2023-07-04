@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { Manga } from "@/types/types";
 import request from "@/util/request";
 import axios from "axios";
+import Link from "next/link";
 export default function Header() {
   const [toggleSearchResult, setToggleSearchResult] = useState<boolean>(false);
   const [searchString, setSearchString] = useState<string>("");
@@ -106,14 +107,20 @@ export default function Header() {
               {result.map((i) => (
                 <li
                   key={i.id}
-                  className="flex items-center hover:bg-neutral-900 hover:cursor-pointer"
+                  className="hover:bg-neutral-900 hover:cursor-pointer"
                 >
-                  <div className="w-12 h-16 overflow-hidden mr-3">
-                    <img src={i.thumb_url} className="object-cover" />
-                  </div>
-                  <div className="flex-1">
-                    <h3>{i.name}</h3>
-                  </div>
+                  <Link
+                    href={`/manga-editor/${i.id}/edit`}
+                    className="flex items-center"
+                    onClick={() => setToggleSearchResult(false)}
+                  >
+                    <div className="w-12 h-16 overflow-hidden mr-3">
+                      <img src={i.thumb_url} className="object-cover" />
+                    </div>
+                    <div className="flex-1">
+                      <h3>{i.name}</h3>
+                    </div>
+                  </Link>
                 </li>
               ))}
             </ul>

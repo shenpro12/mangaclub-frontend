@@ -8,18 +8,9 @@ export interface Manga {
   description: string;
   views: number;
   thumb_url: string;
-  categories: Array<object>;
+  categories: Array<Genres>;
   ratings: Array<object>;
-  chapters: Array<{
-    createdAt: string;
-    updatedAt: string;
-    deleteAt: null;
-    id: string;
-    title: string;
-    order: number;
-    slug: string;
-    images: Array<any>;
-  }>;
+  chapters: Array<Chapter>;
   bookmarks: Array<any>;
   createdAt: string;
   updatedAt: string;

@@ -1,0 +1,15 @@
+.wrap::-webkit-scrollbar {
+  width: 5px;
+  background-color: rgba(0, 0, 0, 0);
+}
+.wrap::-webkit-scrollbar-thumb {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, 0.477);
+  border-radius: 5px;
+}
+.wrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow-y: scroll;
+}

@@ -148,8 +148,8 @@ export default function Header() {
                   <>
                     {togleModal && (
                       <Modal
-                        header="Thông báo"
-                        message="Bạn có chắc muốn đăng xuất?"
+                        header="Message"
+                        message="Are you sure to logout?"
                         yesNo={true}
                         onClose={() => setTogleModal(false)}
                         onAccept={signOutHandle}

@@ -48,7 +48,7 @@ export default function Navigate({
         setMangaData(manga);
       })();
     }
-  }, []);
+  }, [params]);
   if (!mangaData && type === "sub") {
     return (
       <h1 className="w-64 h-full bg-neutral-800 border-r border-white/10 text-white/70 flex flex-col">
@@ -60,8 +60,8 @@ export default function Navigate({
     <div className="w-64 h-full bg-neutral-800 border-r border-white/10 text-white/70 flex flex-col">
       {togleModal && (
         <Modal
-          header="Thông báo"
-          message="Bạn có chắc muốn đăng xuất?"
+          header="Message"
+          message="Are you sure to logout?"
           yesNo={true}
           onClose={() => setTogleModal(false)}
           onAccept={logOutHandle}
@@ -99,7 +99,9 @@ export default function Navigate({
         <div>
           {navigateData.map((i, index) => (
             <Link key={index} href={i.redirect}>
-              <li className={pathname === i.redirect ? styled.active : ""}>
+              <li
+                className={pathname?.includes(i.redirect) ? styled.active : ""}
+              >
                 <FontAwesomeIcon
                   className="w-5 h-5"
                   icon={i.icon}

@@ -35,7 +35,7 @@ export default function Modal({
               className="py-2 px-4 bg-mainColor rounded mx-1 text-sm hover:cursor-pointer duration-200 hover:bg-black normal-case"
               onClick={onAccept}
             >
-              Đồng ý
+              Yes
             </p>
 
             <p

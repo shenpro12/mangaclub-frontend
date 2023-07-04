@@ -9,7 +9,7 @@ export default function ManagerLayout({
   children: React.ReactNode;
 }) {
   const navigateData = [
-    { title: "Dashboard", icon: faChartSimple, redirect: "/manager" },
+    { title: "Dashboard", icon: faChartSimple, redirect: "/manager/dashboard" },
     { title: "Manga", icon: faBookReader, redirect: "/manager/manga" },
     { title: "Account", icon: faChartSimple, redirect: "/manager/account" },
   ];

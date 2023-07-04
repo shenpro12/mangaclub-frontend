@@ -216,6 +216,7 @@ export default function ManagerManga({ mangas }: { mangas: Array<Manga> }) {
             <th className="py-3 px-4 pl-8">
               <input
                 type="checkbox"
+                className=" hover:cursor-pointer"
                 onChange={checkAllHandle}
                 id="checkAll_input"
               />
@@ -236,6 +237,7 @@ export default function ManagerManga({ mangas }: { mangas: Array<Manga> }) {
                   type="checkbox"
                   id="manga_item_input"
                   value={i.id}
+                  className=" hover:cursor-pointer"
                   onChange={checkboxHandle}
                 />
               </td>
