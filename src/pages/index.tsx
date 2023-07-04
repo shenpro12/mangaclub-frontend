@@ -46,7 +46,7 @@ export default function HomePage({ mangaList }: { mangaList: Array<Manga> }) {
 
 export async function getStaticProps() {
   try {
-    const res: ApiResponse = await request.get("manga?paging=none&sort=latest");
+    const res: ApiResponse = await request.request({url:'manga?paging=none&sort=latest',method:'get'});
 
     const mangaList: Array<Manga> = res.payload.mangaList;
     if (!mangaList) {
