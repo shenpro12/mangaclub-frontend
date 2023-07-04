@@ -48,7 +48,7 @@ export async function getStaticProps() {
   try {
     const res: ApiResponse = await request.request({url:'manga?paging=none&sort=latest',method:'get',headers: {
             Authorization: `Bearer dasdsafsadsadsadas`,
-            "Content-Type": application/json,
+            "Content-Type": "application/json",
           },});
 
     const mangaList: Array<Manga> = res.payload.mangaList;
